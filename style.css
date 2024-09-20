@@ -1,0 +1,218 @@
+body {
+    background-color: rgb(243, 243, 243);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    margin: 50;
+    color: #000;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+    color: #45a3fa
+}
+
+
+
+button {
+    color: rgb(0, 0, 0);
+    width: 80px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.158);
+    border: 2px solid white;
+    margin: 5px;
+
+}
+
+i {
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+}
+
+
+.botonBorrarIndividual {
+    cursor: pointer;
+    
+}
+
+.fas.fa-check {  
+    border: #070707;
+}
+
+#input {
+    border: 2px solid transparent;
+    width: 12em;
+    height: 2.5em;
+    margin: 0.4em;
+    padding-left: 0.9em;
+    outline: none;
+    overflow: hidden;
+    background-color: #e7e7e7;
+    border-radius: 10px;
+    transition: all 0.5s;
+   
+    
+}
+
+#input:hover,
+#input:focus {
+  border: 2px solid #4A9DEC;
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+  background-color: white;
+}
+
+
+#fecha {
+    background-color: rgba(255, 253, 253, 0.281);
+    height: 30px;
+    width: 180px;  
+    border: 2px solid white;
+    color: black;  /* Cambiado para que el texto sea visible */
+    border-radius: 10px;
+    padding: 5px;
+    margin: 20px;  /* Ajustar márgenes */
+    display: block;     
+}
+
+
+li {
+    
+    backdrop-filter: blur(10px);
+    list-style-type: none;
+    padding: 5px;
+    margin-bottom: 5px;
+    color: #070707;
+    display: flex;
+    justify-content: space-between; 
+    font-size: 30px;
+    border-radius: 10px;
+    background: #ffffff;
+    
+}
+
+
+
+.cumple {
+    
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    background: #f0f0f0;
+    
+    border: 2px solid #98a6ce;
+    transition: all 0.2s;
+    width: 400px;
+    font-size: 15px;
+    height: 200px;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    margin: -100px 0px 10px 400px;
+}
+.cumple:hover,
+.cumple:focus {
+    border: 2px solid #4A9DEC;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+    background-color: white;
+}
+
+.listas {
+    background-color: #106bd300;
+    display: grid;
+    height: 50px;
+    grid-template-columns: repeat(3,1fr);
+    padding: 2px;
+    width: 300px;
+    border-radius: 10px;
+}
+
+.listas button {
+    gap: 8px;
+    height: 40px;
+    width: 50px;
+    border: none;
+    background: #fafbfc31;
+    border-radius: 14px;
+    cursor: pointer;
+    color: #000;
+    
+}
+
+
+
+
+
+#listaDeTareas {
+    height: 400px;  
+    width: 400px;   
+    overflow-y: auto;
+    
+    
+    padding: 10px;
+    position: absolute;
+    margin-left: -460px;
+    margin-bottom: 20px; 
+   
+    border-radius: 20px;
+    background: #f5f5f5;
+
+    
+    border: 2px solid #98a6ce;
+    transition: all 0.2s;
+    
+}
+
+
+#listaDeTareas::-webkit-scrollbar {
+    width: 9px;
+    background-color: #f5f5f5;
+  }
+  
+  #listaDeTareas::-webkit-scrollbar-thumb {
+    background-color: #98a6ce;
+    border-radius: 20px;
+  }
+
+  #listaDeTareas:hover,
+  #listaDeTareas:focus {
+    border: 2px solid #4A9DEC;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+    background-color: white;}
+
+
+    #menu {
+        height: 30px;
+        width: 30px;
+        position:absolute;
+        margin-left: 1300px;
+        font-size: 40px;
+       background-color: #e7e7e700;
+        
+    }
+
+    .label {
+        display: none;
+        
+        
+    }
+
+    #menu:checked + .label {
+        display: flex;
+        height: 200px;
+    }
+
+    #menu:hover + .label {
+        display: flex;
+    }
+
+    #im {
+        position: absolute;
+        margin-top: 0px;
+        margin-left: 1300px;
+        font-size: 40px;
+        color: #98a6ce;
+        
+
+    }
