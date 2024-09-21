@@ -1,35 +1,42 @@
-// Seleccionamos los elementos del DOM
+
 let boton = document.getElementById("boton")
 let input = document.getElementById("input")
 let listaDeTareas = document.getElementById("listaDeTareas")
-//let fecha = document.getElementById("fecha")
 let botonBorrar = document.getElementById("borrar")
-const guardarfecha = localStorage.getItem("fecha")
+
+let fecha = document.getElementById("fechaCumple");
+let resultado = document.getElementById("resultado");
+let calcular = document.getElementById("calcular");
+let mostrar = document.createElement("p")
+let box = document.getElementById("box")
 
 
 
 
 
-// Función para agregar una tarea
 const agregarTarea = () => {
     if (input.value !== "") {
-        // Crear un nuevo elemento de lista
+       
         let li = document.createElement("li")
+        let div = document.createElement("div")
+        div.classList.add("div_li")
         
-        /* Obtener los valores de la fecha
-        let fechaSeleccionada = new Date(fecha.value)
-        let dia = fechaSeleccionada.getDate() + 1
-        let mes = fechaSeleccionada.getMonth() + 1;// Obtener el mes (getMonth() devuelve 0 para enero)
-        let año = fechaSeleccionada.getFullYear()*/
 
-        // Configurar el contenido del elemento li
-        li.innerHTML = `${input.value} `
+     
+        li.innerHTML = `<p>${input.value}</p> `
 
-        // Crear el botón de borrar individual
+        
         let botonBorrarIndividual = document.createElement("button")
         
         botonBorrarIndividual.addEventListener("click", () => {
-            li.remove() // Eliminar solo la tarea correspondiente
+            li.remove() 
+            Toastify({
+
+                text: "Completado",
+                position:"left",
+                duration: 3000
+                
+                }).showToast();
         })
         botonBorrarIndividual.classList.add("botonBorrarIndividual")
         let iconoBorrar = document.createElement("i")
@@ -41,10 +48,24 @@ const agregarTarea = () => {
         li.appendChild(botonBorrarIndividual)
 
         // Añadir la nueva tarea al contenedor de tareas
-        listaDeTareas.appendChild(li)
+        listaDeTareas.appendChild(div)
+        div.appendChild(li)
         
     } else {
-        alert("Debes agregar una tarea")
+        Toastify({
+            text: "Por favor, escribe una tarea",
+            duration: 1200,
+            destination: "",
+            newWindow: true,
+            close: false,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, #e78c14, #e73314)",
+            },
+            onClick: function(){} // Callback after click
+          }).showToast();
     }
     
     
@@ -62,39 +83,72 @@ botonBorrar.addEventListener("click", borrarTareas)
 
 
 
-// Función para calcular la edad y días hasta el próximo cumpleaños
-const calcularEdadYDias = () => {
-    let fechaCumple = document.getElementById("fechaCumple").value;
-    if (!fechaCumple) {
-        alert("Por favor, selecciona una fecha.");
-        return
+
+box.appendChild(mostrar)
+
+const calcularfecha = (fecha) => {
+    
+  const fechahoy = new Date()
+    const diahoy = parseInt(fechahoy.getDate())
+    const meshoy = parseInt(fechahoy.getMonth())+1
+    const aniohoy = parseInt(fechahoy.getFullYear())
+    
+    const diaCumple = parseInt(String(fecha).substring(8,10))
+    const mesCumple = parseInt(String(fecha).substring(5,7))
+    const anioCumple = parseInt(String(fecha).substring(0,4))
+  
+    let edad = aniohoy - anioCumple
+    if (meshoy < mesCumple) {
+        edad--
+    }else if(meshoy == mesCumple){ 
+        if(diahoy < diaCumple){
+            edad--
+        }
     }
 
-    let hoy = new Date()
-    let cumple = new Date(fechaCumple)
-
-    // Calcular edad
-    let edad = hoy.getFullYear() - cumple.getFullYear()
-    let proximoCumple = new Date(hoy.getFullYear(), cumple.getMonth(), cumple.getDate())
-    // Si el cumpleaños ya pasó este año, calcular para el próximo año
-    if (hoy > proximoCumple) {
-        proximoCumple.setFullYear(hoy.getFullYear() + 1)
-        edad++
-    }else if (hoy < proximoCumple) {
-        
-    }
-
-    // Calcular días restantes
-    let milisegundosPorDia = 1000 * 60 * 60 * 24
-    let diasRestantes = Math.ceil((proximoCumple - hoy) / milisegundosPorDia)
-    if (cumple == hoy) {    
-        document.getElementById("resultado").innerText = "¡Felices cumpleaños!"
-        return
-    }
-    // Mostrar resultado en pantalla
-    let resultado = `Tienes ${edad} años y faltan ${diasRestantes} días para tu próximo cumpleaños.`
-    document.getElementById("resultado").innerText = resultado
+    return edad
 }
 
-// Añadir event listener para el botón de calcular
-document.getElementById("calcular").addEventListener("click", calcularEdadYDias)
+const calculardias = (fecha) => {
+      
+  const fechahoy = new Date()
+  const diahoy = parseInt(fechahoy.getDate())
+  const meshoy = parseInt(fechahoy.getMonth())+1
+  const aniohoy = parseInt(fechahoy.getFullYear())
+
+  const diaCumple = parseInt(String(fecha).substring(8,10))
+  const mesCumple = parseInt(String(fecha).substring(5,7))
+  
+
+ 
+  if (diahoy == diaCumple && meshoy == mesCumple) {
+    Swal.fire({
+        title: "Feliz cumpleaños.",
+        
+        imageUrl: "https://plus.unsplash.com/premium_vector-1682299666311-ef9c9836ae60?q=80&w=1368&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: "Custom image"
+      });
+} else {
+    // Calcular el próximo cumpleaños
+    let proximoCumple = new Date(aniohoy, mesCumple - 1, diaCumple);
+    if (proximoCumple < fechahoy) {
+        proximoCumple.setFullYear(aniohoy + 1);
+    }
+    // Calcular la diferencia en días
+    const diferencia = Math.round((proximoCumple - fechahoy) / (1000 * 60 * 60 * 24));
+    
+    mostrar.innerText = `Faltan ${diferencia} días para tu cumpleaños (${proximoCumple.toLocaleDateString()})`;
+}
+   
+}
+
+function guardafecha(fecha){
+    localStorage.setItem("fecha", fecha.value)}
+
+calcular.addEventListener("click", () => {
+    resultado.innerText = `Tu edad es ${calcularfecha(fecha.value)}`
+    calculardias(fecha.value)
+    guardafecha(fecha.value)
+   })

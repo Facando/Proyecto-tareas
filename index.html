@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="sweetalert2.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <title>Document</title>
 </head>
 <body>
@@ -13,31 +15,37 @@
 
     <div class="listas">
         <ul id="listaDeTareas"></ul>
+        <form action="#">
         <input id="input" type="text" placeholder="Agregar tarea">
         <!--<input id="fecha" type="datetime-local">-->
         <button id="boton">
             <i class="fa-solid fa-plus"></i>
         </button>
+    </form>
         <button id="borrar">
             <i class="fa-solid fa-trash"></i>
         </button>
     </div>
 
     <!-- Checkbox para el menú de cumpleaños -->
-    <input type="checkbox" id="menu"  >
+    <i class="fa-solid fa-calendar-days" id="im"></i>
+    <input type="button" id="menu"  >
     
     <label class="label" for="menu">
     
     <div class="cumple">
-        <h2>Introduce tu fecha de cumpleaños:</h2>
-        <input id="fechaCumple" type="date">
+        <h4>ingrese la fecha de su cumpleaños</h4>
+        <input type="date" id="fechaCumple">
         <button id="calcular">Calcular</button>
         <p id="resultado"></p>
-    
+       <div id="box"></div>
     </div>
 </label>
 
     <script src="main.js"></script>
-
+    <!--toastify-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!--sweetalert-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
