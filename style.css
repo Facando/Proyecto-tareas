@@ -7,11 +7,15 @@ body {
     margin: 50;
     color: #000;
 
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 h1 {
-    color: #45a3fa
+    color: #45a3fa;
+    position: absolute;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 100px;
 }
 
 
@@ -27,7 +31,7 @@ button {
 }
 
 i {
-    color: rgb(0, 0, 0);
+    color: #4A9DEC;
     font-size: 20px;
 }
 
@@ -38,14 +42,13 @@ i {
     
 }
 
-.fas.fa-check {  
-    border: #070707;
-}
+
 
 #input {
     border: 2px solid transparent;
-    width: 12em;
-    height: 2.5em;
+    width: 15em;
+    height: 3.0em;
+    font-size: 0.9em;
     margin: 0.4em;
     padding-left: 0.9em;
     outline: none;
@@ -56,9 +59,12 @@ i {
    
     
 }
+
 form {
     display: flex;
     justify-content: center;
+    margin-bottom: 100px;
+
 }
 
 #input:hover,
@@ -69,18 +75,26 @@ form {
 }
 
 
-#fecha {
+#fechaCumple {
     background-color: rgba(255, 253, 253, 0.281);
     height: 30px;
     width: 180px;  
-    border: 2px solid white;
-    color: black;  /* Cambiado para que el texto sea visible */
+    border: 2px solid #4A9DEC;
+    color: black;  
     border-radius: 10px;
     padding: 5px;
-    margin: 20px;  /* Ajustar márgenes */
+    margin: 20px;
+    font-size: large;
     display: block;     
 }
 
+#fechaCumple:hover,
+#fechaCumple:focus {
+  border: 2px solid #4A9DEC;
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+  background-color: white;
+  transition: all 0.5s;
+}
 
 li {
    
@@ -108,9 +122,9 @@ li {
  li p {
      margin: 20px;
      color: #000000;
-     font-size: 20px;
+     font-size: 23px;
      position: relative; 
-     z-index: 1;
+     
  }
  
 .div_li button {
@@ -121,6 +135,9 @@ li {
     cursor: pointer;
     padding: 1px;
 }
+
+
+
 
 .cumple {
     
@@ -136,8 +153,7 @@ li {
     height: 400px;
     display: flex;
     position: absolute;
-    
-    margin: -100px 0px 10px 400px;
+    margin: 10px 0px 10px 700px
 }
 .cumple:hover,
 .cumple:focus {
@@ -180,8 +196,7 @@ li {
     
     padding: 10px;
     position: absolute;
-    margin-left: -460px;
-    margin-bottom: 20px; 
+    margin: 96px 0px 100px -350px ; 
    
     border-radius: 20px;
     background: #f5f5f5;
@@ -191,6 +206,8 @@ li {
     transition: all 0.2s;
     
 }
+
+
 
 
 #listaDeTareas::-webkit-scrollbar {
@@ -228,7 +245,7 @@ li {
     .label {
         display: none;
         
-        animation: descendiente 0.2s ease-in-out;
+        animation: animacion 0.2s ease-in-out;
         opacity: 0;
     }
     
@@ -236,11 +253,12 @@ li {
     #menu:hover + .label {
         display: flex;
         opacity: 1;
-        
+        position: absolute;
+        margin-left: 250px;
         
         
     }
-    @keyframes descendiente {
+    @keyframes animacion {
         0% {
             opacity: 0;
             transform: translateX(10px);
@@ -261,6 +279,149 @@ li {
     }
     
     #menu:hover #im {
-        color: #ff6b6b; /* Cambia el color en hover para darle un efecto visual */
+        color: #ff6b6b; 
     }
     
+   
+
+    #calcular{
+        border: 2px solid #45a3fa;
+        width: 8em;
+        height: 3.5em;
+        margin: 1em;
+        padding-left: 0.9em;
+        outline: none;
+        overflow: hidden;
+        padding: 0.5em;
+       
+        background-color: #e7e7e7;
+        border-radius: 10px;
+        transition: all 0.5s;
+        
+    }
+
+    #calcular:hover{
+        border: 2px solid #98a6ce;
+        background-color: rgb(255, 255, 255);
+    }
+
+    
+
+    .container {
+        width: 30em; 
+        max-height: auto; 
+        margin-top: 20px;
+        background-color: #7a7979;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 10px;
+        padding: 2px;
+        margin-bottom: 20px;
+        border: 2px solid #98a6ce;
+        position: absolute;
+        margin-left: 710px;
+        margin-top: 615px;
+    }
+    
+    .calendar {
+        width: 110%; /* Ajusta el ancho del calendario */
+        max-height: 400px; /* Limitar el tamaño máximo a 400px */
+        padding: 20px 15px; /* Reducir el relleno para que ocupe menos espacio */
+        background: #fff;
+        border-radius: 20px;
+        position: absolute;
+        margin-top: -10px;
+        border: 2px solid #98a6ce;
+    }
+
+    .calendar:hover,
+    .calendar:focus {
+    border: 2px solid #4A9DEC;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+    background-color: white;}
+    
+    
+.calendar .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  background-color: #ffffffef;
+}
+.calendar .header .month {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 600;
+  
+}
+.calendar .header .btns {
+  display: flex;
+  gap: 10px;
+}
+.calendar .header .btns .btn {
+  width: 50px;
+  height: 40px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.calendar .header .btns .btn:hover {
+  background: #45a2fa75;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+.calendar .weekdays {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.calendar .weekdays .day {
+  width: calc(100% / 7 - 10px);
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+.calendar .days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  
+}
+.calendar .days .day {
+  width: calc(100% / 7 - 10px);
+  height: 50px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  transition: all 0.3s;
+  user-select: none;
+}
+.calendar .days .day:not(.next):not(.prev):hover {
+  color: #fff;
+  background: #45a3fa;
+  transform: scale(1.05);
+}
+.calendar .days .day.next,
+.calendar .days .day.prev {
+  color: #ccc;
+}
+.calendar .days .day.today {
+  color: #fff;
+  background: #98a6ce;
+}

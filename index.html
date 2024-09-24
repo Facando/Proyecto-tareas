@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noty@3.2.0/lib/noty.css">
     <title>Document</title>
 </head>
 <body>
 
-    <h1>Calendario</h1>
+    <h1>Agenda</h1>
+ 
 
     <div class="listas">
         <ul id="listaDeTareas"></ul>
@@ -27,6 +32,45 @@
         </button>
     </div>
 
+ 
+    <div class="container">
+        <div class="calendar">
+          <div class="header">
+            <div class="month"></div>
+            <div class="btns">
+              <!-- today -->
+              <div class="btn today">
+                <i class="fas fa-calendar-day"></i>
+              </div>
+              <!-- previous month -->
+              <div class="btn prev">
+                <i class="fas fa-chevron-left"></i>
+              </div>
+              <!-- next month -->
+              <div class="btn next">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+          <div class="weekdays">
+            <div class="day">Dom</div>
+            <div class="day">Lun</div>
+            <div class="day">Mar</div>
+            <div class="day">Mie</div>
+            <div class="day">Jue</div>
+            <div class="day">Vie</div>
+            <div class="day">Sab</div>
+          </div>
+          
+          <div class="days">
+            
+            <!-- render days with js -->
+          </div>
+          
+        </div>
+      </div>
+
+
     <!-- Checkbox para el menú de cumpleaños -->
     <i class="fa-solid fa-calendar-days" id="im"></i>
     <input type="button" id="menu"  >
@@ -34,7 +78,7 @@
     <label class="label" for="menu">
     
     <div class="cumple">
-        <h4>ingrese la fecha de su cumpleaños</h4>
+        <h4>Ingrese la fecha de su cumpleaños</h4>
         <input type="date" id="fechaCumple">
         <button id="calcular">Calcular</button>
         <p id="resultado"></p>
@@ -47,5 +91,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!--sweetalert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- calendario-->
+   
+<script src="https://cdn.jsdelivr.net/npm/noty@3.2.0/lib/noty.min.js"></script>
+
+    
 </body>
 </html>
