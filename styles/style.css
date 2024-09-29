@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(243, 243, 243);
+    background-color: rgb(255, 255, 255);
     display: grid;
     justify-content: center;
     align-items: center;
@@ -351,7 +351,12 @@ li {
   padding-bottom: 20px;
   border-bottom: 2px solid #ccc;
   background-color: #ffffffef;
+ 
 }
+
+
+
+
 .calendar .header .month {
   display: flex;
   align-items: center;
