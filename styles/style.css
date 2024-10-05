@@ -53,7 +53,7 @@ i {
     padding-left: 0.9em;
     outline: none;
     overflow: hidden;
-    background-color: #e7e7e7;
+    background-color: #c7dafc;
     border-radius: 10px;
     transition: all 0.5s;
    
@@ -326,9 +326,9 @@ li {
     }
     
     .calendar {
-        width: 110%; /* Ajusta el ancho del calendario */
-        max-height: 400px; /* Limitar el tamaño máximo a 400px */
-        padding: 20px 15px; /* Reducir el relleno para que ocupe menos espacio */
+        width: 110%;
+        max-height: 400px; 
+        padding: 20px 15px; 
         background: #fff;
         border-radius: 20px;
         position: absolute;
@@ -450,8 +450,9 @@ h3 {
   transition: background-color 0.3s ease;
 }
 
-/* Efecto al pasar el ratón */
+
 .feriado:hover {
-  background-color: #356ab2;  /* Cambia el color de fondo al pasar el ratón */
-  cursor: pointer;  /* Cambia el cursor a mano para indicar interactividad */
+  background-color: #356ab2;  
+  cursor: pointer;  
 }
+
