@@ -1,87 +1,167 @@
 let boton = document.getElementById("boton");
 let input = document.getElementById("input");
+let descripcion = document.getElementById("descripcion");
 let listaDeTareas = document.getElementById("listaDeTareas");
 let botonBorrar = document.getElementById("borrar");
-let fecha = document.getElementById("fechaCumple");
-let resultado = document.getElementById("resultado");
-let calcular = document.getElementById("calcular");
-let mostrar = document.createElement("p");
-let box = document.getElementById("box");
+let filtroPrioridad = document.getElementById("filtroPrioridad");
+let prioridad = document.getElementById("prioridad");
+let buscador = document.getElementById("buscador");
+let botonDeshacer = document.getElementById("deshacer");
+
 let guardartareas = JSON.parse(localStorage.getItem("tareas")) || [];
+let tareasEliminadas = []; // Array para almacenar las últimas tareas eliminadas
 
-box.appendChild(mostrar);
+// Contenedor para notificaciones de tareas pendientes
+let contenedorNotificaciones = document.createElement("div");
+contenedorNotificaciones.classList.add("notificaciones");
+document.body.appendChild(contenedorNotificaciones);
 
-// Función para mostrar las tareas almacenadas
+// Función para actualizar las notificaciones
+const actualizarNotificaciones = () => {
+    let tareasAltas = guardartareas.filter(tarea => tarea.prioridad === "alta" && !tarea.completado).length;
+    let tareasMedias = guardartareas.filter(tarea => tarea.prioridad === "media" && !tarea.completado).length;
+    let tareasBajas = guardartareas.filter(tarea => tarea.prioridad === "baja" && !tarea.completado).length;
+
+    contenedorNotificaciones.innerHTML = `
+
+        <p class="notificacionAlta">${tareasAltas}</p>
+        <p class="notificacionMedia"> ${tareasMedias}</p>
+        <p class="notificacionBaja"> ${tareasBajas}</p>
+    `;
+};
+
+// Mostrar tareas al cargar la página
 const mostrarTareasGuardadas = () => {
-    guardartareas.forEach(tarea => {
+    listaDeTareas.innerHTML = '';  // Limpiar lista
+    let filtro = filtroPrioridad.value;
+    let busqueda = buscador.value.toLowerCase();
+
+    guardartareas.filter(tarea => 
+        (filtro === "todas" || tarea.prioridad === filtro) &&
+        tarea.titulo.toLowerCase().includes(busqueda)
+    ).forEach(tarea => {
         let li = document.createElement("li");
         let div = document.createElement("div");
         div.classList.add("div_li");
-        
-        li.innerHTML = `<p>${tarea}</p>`;
-        
+
+        // Mostrar la fecha solo si existe, sino solo el título y la prioridad
+        if (tarea.fecha) {
+            const fechaTarea = new Date(tarea.fecha);
+            const diaTarea = fechaTarea.getDate();
+            const mesTarea = fechaTarea.getMonth() + 1;
+            li.innerHTML = `<p>${diaTarea}/${mesTarea} - <strong>${tarea.titulo} </strong><span class="prioridad">(${tarea.prioridad})<span>  <span class="salto"> ${tarea.descripcion}</span></p>`;
+        } else {
+            li.innerHTML = `<p><strong>${tarea.titulo} :</strong> (${tarea.prioridad})<span class="salto">${tarea.descripcion}<span></p>`;
+        }
+
+        let botonCompletar = document.createElement("button");
+    botonCompletar.innerHTML = tarea.completado ? "Deshacer" : "Completar";
+    botonCompletar.classList.add("botonCompletar");
+
+    botonCompletar.addEventListener("click", () => {
+    tarea.completado = !tarea.completado;  // Alterna entre completado y no completado
+
+    if (tarea.completado) {
+        li.classList.add("completada");  // Agrega la clase para mostrarla como completada
+        botonCompletar.innerHTML = "Deshacer";  // Cambia el texto del botón
+    } else {
+        li.classList.remove("completada");  // Quita la clase de completada
+        botonCompletar.innerHTML = "Completar";  // Cambia el texto del botón
+    }
+
+    actualizarLocalStorage();  // Actualiza el localStorage con el nuevo estado de la tarea
+    actualizarNotificaciones();  // Actualiza las notificaciones
+});
+
+
+        let botonEditar = document.createElement("button");
+        botonEditar.innerHTML = "Editar";
+        botonEditar.classList.add("botonEditar");
+        botonEditar.addEventListener("click", () => {
+            Swal.fire({
+                title: 'Editar tarea',
+                html: `
+        <input id="nuevoTitulo" class="swal2-input" value="${tarea.titulo}" placeholder="Nuevo título">
+        <input id="nuevaDescripcion" class="swal2-input" value="${tarea.descripcion}" placeholder="Nueva descripción">
+        <select id="nuevaPrioridad" class="swal2-input">
+            <option value="alta" ${tarea.prioridad === 'alta' ? 'selected' : ''}>Alta</option>
+            <option value="media" ${tarea.prioridad === 'media' ? 'selected' : ''}>Media</option>
+            <option value="baja" ${tarea.prioridad === 'baja' ? 'selected' : ''}>Baja</option>
+        </select>
+    `,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                  const nuevoTitulo = Swal.getPopup().querySelector('#nuevoTitulo').value;
+                  const nuevaDescripcion = Swal.getPopup().querySelector('#nuevaDescripcion').value;
+                  const nuevaPrioridad = Swal.getPopup().querySelector('#nuevaPrioridad').value;
+                  if (!nuevoTitulo || !nuevaDescripcion) {
+                    Swal.showValidationMessage('Ambos campos son requeridos');
+                  }
+                  return { nuevoTitulo, nuevaDescripcion, nuevaPrioridad };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    tarea.titulo = result.value.nuevoTitulo;
+                    tarea.descripcion = result.value.nuevaDescripcion;
+                    tarea.prioridad = result.value.nuevaPrioridad;
+                    actualizarLocalStorage();
+                    mostrarTareasGuardadas();
+                    Swal.fire({
+                        title: 'Actualizado',
+                        text: 'La tarea ha sido actualizada',
+                        icon: 'success',
+                        timer: 1500
+                    });
+                }
+            });
+        });
+
         let botonBorrarIndividual = document.createElement("button");
+        botonBorrarIndividual.innerHTML = "Borrar";
         botonBorrarIndividual.classList.add("botonBorrarIndividual");
-        
         botonBorrarIndividual.addEventListener("click", () => {
-            li.remove();
-            eliminarTareaDeLocalStorage(tarea);  // Eliminar la tarea del localStorage
+            tareasEliminadas.push(tarea);  // Agregar la tarea al array de eliminadas
+            li.remove();  // Remover la tarea de la lista
+            eliminarTareaDeLocalStorage(tarea);
+
             Toastify({
-                text: "Completado",
-                position: "left",
+                text: "Tarea eliminada",
+                position: "right",
                 duration: 3000
             }).showToast();
+            actualizarNotificaciones();
         });
-        
-        let iconoBorrar = document.createElement("i");
-        iconoBorrar.classList.add("fas", "fa-check");
-        botonBorrarIndividual.appendChild(iconoBorrar);
-        
+
+        li.appendChild(botonCompletar);
+        li.appendChild(botonEditar);
         li.appendChild(botonBorrarIndividual);
-        listaDeTareas.appendChild(div);
         div.appendChild(li);
+        listaDeTareas.appendChild(div);
     });
+    actualizarNotificaciones();
 };
 
 // Función para agregar una nueva tarea
 const agregarTarea = () => {
-    if (input.value !== "") {
-        let tarea = input.value;
-        let li = document.createElement("li");
-        let div = document.createElement("div");
-        div.classList.add("div_li");
-
-        li.innerHTML = `<p>${tarea}</p>`;
+    if (input.value !== "" && descripcion.value !== "") {
+        let tarea = {
+            titulo: input.value,
+            descripcion: descripcion.value,
+            prioridad: prioridad.value,
+            completado: false,
+            fecha: null  // No se asigna fecha si no se agrega desde el calendario
+        };
         
-        let botonBorrarIndividual = document.createElement("button");
-        botonBorrarIndividual.classList.add("botonBorrarIndividual");
-
-        botonBorrarIndividual.addEventListener("click", () => {
-            li.remove();
-            eliminarTareaDeLocalStorage(tarea);  // Eliminar la tarea del localStorage
-            Toastify({
-                text: "Completado",
-                position: "left",
-                duration: 3000
-            }).showToast();
-        });
-
-        let iconoBorrar = document.createElement("i");
-        iconoBorrar.classList.add("fas", "fa-check");
-        botonBorrarIndividual.appendChild(iconoBorrar);
-
-        li.appendChild(botonBorrarIndividual);
-        listaDeTareas.appendChild(div);
-        div.appendChild(li);
-
-        // Guardar la tarea en el localStorage
         guardartareas.push(tarea);
         localStorage.setItem("tareas", JSON.stringify(guardartareas));
-        input.value = "";  // Limpiar el input
-        
+        mostrarTareasGuardadas();
+        input.value = "";  // Limpiar input
+        descripcion.value = "";  // Limpiar descripción
     } else {
         Toastify({
-            text: "Por favor, escribe una tarea",
+            text: "Por favor, completa todos los campos.",
             duration: 1200,
             gravity: "top",
             position: "center",
@@ -94,9 +174,10 @@ const agregarTarea = () => {
 
 // Función para borrar todas las tareas
 const borrarTareas = () => {
-    listaDeTareas.innerHTML = "";  // Borra todas las tareas de la lista
-    localStorage.removeItem("tareas");  // Borra todas las tareas del localStorage
-    guardartareas = [];  // Vaciar el array local
+    listaDeTareas.innerHTML = "";
+    localStorage.removeItem("tareas");
+    guardartareas = [];
+    actualizarNotificaciones();
 };
 
 // Función para eliminar una tarea específica del localStorage
@@ -105,75 +186,80 @@ const eliminarTareaDeLocalStorage = (tarea) => {
     localStorage.setItem("tareas", JSON.stringify(guardartareas));
 };
 
-// Añadir los event listeners
+// Función para actualizar el localStorage
+const actualizarLocalStorage = () => {
+    localStorage.setItem("tareas", JSON.stringify(guardartareas));
+};
+
+// Función para deshacer el último borrado (restaurar la última tarea eliminada)
+const deshacerBorrado = () => {
+    if (tareasEliminadas.length > 0) {
+        let tareaRestaurada = tareasEliminadas.pop();  // Recuperar la última tarea eliminada
+        guardartareas.push(tareaRestaurada);
+        actualizarLocalStorage();
+        mostrarTareasGuardadas();
+
+        Toastify({
+            text: "Tarea restaurada",
+            position: "right",
+            duration: 3000
+        }).showToast();
+        actualizarNotificaciones();
+    } else {
+        Toastify({
+            text: "No hay tareas para deshacer",
+            position: "right",
+            duration: 3000,
+            style: {
+                background: "#f44336"
+            }
+        }).showToast();
+    }
+};
+
+// Event listeners
 boton.addEventListener("click", agregarTarea);
 botonBorrar.addEventListener("click", borrarTareas);
+filtroPrioridad.addEventListener("change", mostrarTareasGuardadas);
+buscador.addEventListener("input", mostrarTareasGuardadas);
+botonDeshacer.addEventListener("click", deshacerBorrado);
 
-// Mostrar las tareas almacenadas cuando se carga la página
+// Mostrar tareas al cargar la página
 mostrarTareasGuardadas();
 
-
-
-
-
-// Funciones para el cálculo de edad y días hasta el cumpleaños
-const calcularfecha = (fecha) => {
-    const fechahoy = new Date();
-    const diahoy = fechahoy.getDate();
-    const meshoy = fechahoy.getMonth() + 1;
-    const aniohoy = fechahoy.getFullYear();
-
-    const diaCumple = parseInt(fecha.substring(8, 10));
-    const mesCumple = parseInt(fecha.substring(5, 7));
-    const anioCumple = parseInt(fecha.substring(0, 4));
-
-    let edad = aniohoy - anioCumple;
-    if (meshoy < mesCumple || (meshoy === mesCumple && diahoy < diaCumple)) {
-        edad--;
-    }
-    return edad;
-};
-
-
-const calculardias = (fecha) => {
-    const fechahoy = new Date();
-    const diahoy = fechahoy.getDate();
-    const meshoy = fechahoy.getMonth() + 1;
-    const aniohoy = fechahoy.getFullYear();
-
-    const diaCumple = parseInt(fecha.substring(8, 10));
-    const mesCumple = parseInt(fecha.substring(5, 7));
-
-    if (diahoy === diaCumple && meshoy === mesCumple) {
-        Swal.fire({
-            title: "¡Feliz cumpleaños!",
-            imageUrl: "https://plus.unsplash.com/premium_vector-1682299666311-ef9c9836ae60?q=80&w=1368&auto=format&fit=crop",
-            imageWidth: 400,
-            imageHeight: 200,
-            imageAlt: "Imagen de cumpleaños"
-        });
-    } else {
-        let proximoCumple = new Date(aniohoy, mesCumple - 1, diaCumple);
-        if (proximoCumple < fechahoy) {
-            proximoCumple.setFullYear(aniohoy + 1);
+// Función para aplicar colores a las opciones según la prioridad
+function aplicarColoresPrioridad() {
+    const select = document.getElementById("prioridad");
+    
+    // Iterar sobre cada opción dentro del select
+    for (let i = 0; i < select.options.length; i++) {
+        let option = select.options[i];
+        
+        // Cambiar el color según el valor de la opción
+        if (option.value === "alta") {
+            option.style.backgroundColor = "#ff4d4d";  // Rojo para alta prioridad
+            option.style.color = "white";
+        } else if (option.value === "media") {
+            option.style.backgroundColor = "#ffcc00";  // Amarillo para media prioridad
+            option.style.color = "black";
+        } else if (option.value === "baja") {
+            option.style.backgroundColor = "#4caf50";  // Verde para baja prioridad
+            option.style.color = "white";
         }
-        const diferencia = Math.round((proximoCumple - fechahoy) / (1000 * 60 * 60 * 24));
-        mostrar.innerText = `Faltan ${diferencia} días para tu cumpleaños (${proximoCumple.toLocaleDateString()})`;
     }
-};
+}
 
-calcular.addEventListener("click", () => {
-    if (!fecha.value) {
-        Toastify({
-            text: "Por favor, ingresa una fecha.",
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            backgroundColor: "#f44336",
-            stopOnFocus: true,
-        }).showToast();
-    } else {
-        resultado.innerText = `Tu edad es ${calcularfecha(fecha.value)}`;
-        calculardias(fecha.value);
-    }
-});
+// Llamar a la función cuando la página esté cargada
+document.addEventListener("DOMContentLoaded", aplicarColoresPrioridad);
+
+
+
+
+diahoy = new Date();
+document.getElementById("diahoy").innerHTML = diahoy.toLocaleDateString();
+
+
+
+
+
+

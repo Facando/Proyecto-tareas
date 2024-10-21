@@ -1,0 +1,217 @@
+/* Estilos del contenedor para centrar el calendario */
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+
+.container {
+    width: 50em; /* Más ancho */
+    max-height: auto; 
+    margin-top: 20px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    
+    margin-left: auto; /* Centra horizontalmente */
+    margin-right: auto; /* Centra horizontalmente */
+}
+
+/* Estilos del calendario */
+.calendar {
+    width: 100%; /* Se ajusta al contenedor */
+    max-height: 500px; /* Aumentamos el tamaño máximo */
+    padding: 20px 15px; 
+    background: #fff;
+    border-radius: 20px;
+    position: relative; /* Ajustamos la posición */
+    margin-top: 10px;
+    border: 2px solid #98a6ce;
+}
+
+.calendar:hover,
+.calendar:focus {
+    border: 2px solid #4A9DEC;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+    background-color: white;
+}
+
+.calendar .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+    background-color: #ffffffef;
+}
+
+.calendar .header .month {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.calendar .header .btns {
+    display: flex;
+    gap: 10px;
+}
+
+.calendar .header .btns .btn {
+    width: 50px;
+    height: 40px;
+    background: #ffffff;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    color: #000000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+
+
+
+.calendar .header .btns .btn:hover {
+    background: #45a2fab7;
+    color: #000000;
+    transform: scale(1.05);
+}
+
+.calendar .weekdays {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.calendar .weekdays .day {
+    width: calc(100% / 7 - 10px);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.calendar .days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.calendar .days .day {
+    width: calc(100% / 7 - 10px);
+    height: 50px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+    transition: all 0.3s;
+    user-select: none;
+}
+
+.calendar .days .day:not(.next):not(.prev):hover {
+    color: #fff;
+    background: #45a3fa;
+    transform: scale(1.05);
+}
+
+.calendar .days .day.next,
+.calendar .days .day.prev {
+    color: #ccc;
+}
+
+.calendar .days .day.today {
+    color: #fff;
+    background: #98a6ce;
+}
+
+/* Estilos del menú lateral */
+.sidebar {
+    position: fixed;
+    height: 100%;
+    width: 250px;
+    background-color: #4A9DEC;
+    color: white;
+    padding-top: 20px;
+    top: 0px;
+    left: 0;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.sidebar ul li i {
+    margin-right: 10px;
+}
+
+.sidebar ul li:hover {
+    background-color: #357ABD;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+
+.feriado {
+    color: #fff;  
+    position: absolute;
+    margin-top: 10px; 
+    margin-left:900px; 
+    background-color: #4a90e2; 
+    border-radius: 10px;  
+    padding: 15px;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    font-size: 16px;  
+    font-family: 'Arial', sans-serif; 
+     
+    transition: background-color 0.3s ease;
+  }
+  
+  .feriado h3 {
+    margin-top: 0;
+  }
+  .feriado:hover {
+    background-color: #356ab2;  
+    cursor: pointer;  
+  }

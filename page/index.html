@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <link rel="stylesheet" href="/styles/style.css"> <!-- Verifica si este archivo es necesario -->
+    <title>Agenda Completa</title>
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="sidebar">
+        <h2>Menú</h2>
+        <ul>
+            <li class="pagina"><a href="calendario.html" ><i class="fas fa-calendar"></i> Calendario</a></li>
+            <li><h3 id="diahoy"></h3></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Agenda de Tareas</h1>
+        <div class="listas">
+            <!-- Formulario para agregar tareas -->
+            <form id="formAgregarTarea">
+                <input id="input" type="text" placeholder="Título de la tarea" required>
+                <input id="descripcion" type="text" placeholder="Descripción de la tarea" required>
+                <select id="prioridad">
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+                <button type="button" id="boton">
+                    <i class="fas fa-plus"></i> Agregar tarea
+                </button>
+            </form>
+
+            <!-- Filtros y búsqueda -->
+            <input type="text" id="buscador" placeholder="Buscar tarea por título">
+            <select id="filtroPrioridad">
+                <option value="todas">Todas las Prioridades</option>
+                <option value="alta">Alta</option>
+                <option value="media">Media</option>
+                <option value="baja">Baja</option>
+            </select>
+
+            <!-- Lista de tareas -->
+            <ul id="listaDeTareas"></ul>
+
+            <!-- Botones adicionales -->
+            <button id="borrar"><i class="fas fa-trash-alt"></i> Borrar todo definitivamente </button>
+            <button id="deshacer"><i class="fas fa-undo-alt"></i> Deshacer última tarea borrada</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/Calendario.js"></script>
+</body>
+</html>

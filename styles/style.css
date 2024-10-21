@@ -1,458 +1,353 @@
+/* General */
 body {
-    background-color: rgb(255, 255, 255);
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    height: 10vh;
-    margin: 50;
-    color: #000;
-
-    font-family: "Poppins", sans-serif;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
 }
 
-h1 {
-    color: #45a3fa;
-    position: absolute;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 100px;
+/* Menú lateral */
+.sidebar {
+  position: fixed;
+  height: 100%;
+  width: 250px;
+  background-color: #4A9DEC;
+  color: white;
+  padding-top: 20px;
+  top: 0px;
+  left: 0;
+}
+
+.sidebar h2 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 30px;
+  color: #ffffff;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  
+}
+
+.sidebar ul li {
+  padding: 15px;
+  text-align: left;
+  
+  font-size: 18px;
+  
+  text-decoration: none;
+}
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+.sidebar ul li i {
+  margin-right: 10px;
+}
+
+.pagina:hover{
+  background-color: #357ABD;
+  cursor: pointer;
+  color: white;
+  text-decoration: underline;
 }
 
 
 
-button {
-    color: rgb(0, 0, 0);
-    width: 80px;
-    height: 50px;
-    background-color: rgba(0, 0, 0, 0.158);
-    border: 2px solid white;
-    margin: 5px;
-
+.main-content {
+  margin-left: 260px;
+  padding: 20px;
+  width: calc(100% - 260px); /* Resta el ancho de la barra lateral */
+  transition: margin-left 0.3s;
 }
 
-i {
-    color: #4A9DEC;
-    font-size: 20px;
+/* Contenedores */
+.listas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-
-.botonBorrarIndividual {
-    cursor: pointer;
-   
-    
-}
-
-
-
-#input {
-    border: 2px solid transparent;
-    width: 15em;
-    height: 3.0em;
-    font-size: 0.9em;
-    margin: 0.4em;
-    padding-left: 0.9em;
-    outline: none;
-    overflow: hidden;
-    background-color: #c7dafc;
-    border-radius: 10px;
-    transition: all 0.5s;
-   
-    
-}
-
-form {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 100px;
-
-}
-
-#input:hover,
-#input:focus {
-  border: 2px solid #4A9DEC;
-  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+.card {
   background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-
-#fechaCumple {
-    background-color: rgba(255, 253, 253, 0.281);
-    height: 30px;
-    width: 180px;  
-    border: 2px solid #4A9DEC;
-    color: black;  
-    border-radius: 10px;
-    padding: 5px;
-    margin: 20px;
-    font-size: large;
-    display: block;     
-}
-
-#fechaCumple:hover,
-#fechaCumple:focus {
-  border: 2px solid #4A9DEC;
-  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
-  background-color: white;
+/* Inputs y selects */
+input, select {
+  border: 2px solid transparent;
+  width: 15em;
+  height: 3em;
+  font-size: 0.9em;
+  margin: 0em;
+  padding-left: 0.9em;
+  outline: none;
+  background-color: #c7dafc;
+  border-radius: 10px;
   transition: all 0.5s;
 }
 
-li {
-   
-    
-    list-style-type: none;
-    padding: 5px;
-    margin-bottom: 5px;
-    
-    display: flex;
-    justify-content: space-between; 
-    
-    border-radius: 20px;
-    
-    
-}
-.div_li {
-    background-color: rgba(0, 157, 248, 0.5); 
-    border-radius: 20px;
-    padding: 0px;
-    margin-bottom: 5px;
-   
-    
- }
- 
- li p {
-     margin: 20px;
-     color: #000000;
-     font-size: 23px;
-     position: relative; 
-     
- }
- 
-.div_li button {
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.158);
-    border: 2px solid white;
-    margin: 10px;
-    cursor: pointer;
-    padding: 1px;
+input:hover,
+input:focus,
+select:hover,
+select:focus {
+  border: 2px solid #3B5998;
+  background-color: white;
+  box-shadow: 0px 0px 0px 7px rgba(59, 89, 152, 0.2);
 }
 
-
-
-
-.cumple {
-    
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px;
-    background: #f0f0f0;
-    
-    border: 2px solid #98a6ce;
-    transition: all 0.2s;
-    width: 400px;
-    font-size: 15px;
-    height: 400px;
-    display: flex;
-    position: absolute;
-    margin: 10px 0px 10px 700px
-}
-.cumple:hover,
-.cumple:focus {
-    border: 2px solid #4A9DEC;
-    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
-    background-color: white;
+/* Botones */
+button {
+  color: white;
+  background-color: #3B5998;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  margin: 5px;
+  width: auto;
 }
 
-.listas {
-    background-color: #106bd300;
-    display: grid;
-    height: 50px;
-    grid-template-columns: repeat(3,1fr);
-    padding: 2px;
-    width: 300px;
-    border-radius: 10px;
+button:hover {
+  background-color: #2A4373;
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.listas button {
-    gap: 8px;
-    height: 40px;
-    width: 50px;
-    border: none;
-    background: #fafbfc31;
-    border-radius: 14px;
-    cursor: pointer;
-    color: #000;
-    
+.button-outline {
+  color: #3B5998;
+  border: 2px solid #3B5998;
+  background-color: white;
 }
 
+.button-outline:hover {
+  background-color: #e6f0fa;
+}
 
-
-
-
+/* Lista de tareas */
 #listaDeTareas {
-    height: 400px;  
-    width: 400px;   
-    overflow-y: auto;
-    
-    
-    padding: 10px;
-    position: absolute;
-    margin: 96px 0px 100px -350px ; 
-   
-    border-radius: 20px;
-    background: #f5f5f5;
-    
-    
-    border: 2px solid #98a6ce;
-    transition: all 0.2s;
-    
+  height: 500px;
+  width: 100%;
+  max-width: 800px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  border: 2px solid #98a6ce;
+  margin-bottom: 5px;
+  margin-top: -20px;
+}
+
+#listaDeTareas li {
+  list-style: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(0, 157, 248, 0.5);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+p {
+  
+  margin-right: 10px;
+  
 }
 
 
-
-
-#listaDeTareas::-webkit-scrollbar {
-    width: 9px;
-    background-color: #f5f5f5;
-    display: none;
-  }
+.botonCompletar{
+  position: relative;
+  margin-left: -200px;
+  left: 200px;
   
-  #listaDeTareas::-webkit-scrollbar-thumb {
-    background-color: #98a6ce;
-    border-radius: 20px;
-  }
+}
+.botonEditar{
+  position: relative;
+  left: 100px;
+  
+}
 
-  #listaDeTareas:hover,
-  #listaDeTareas:focus {
-    border: 2px solid #4A9DEC;
-    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
-    background-color: white;}
+#listaDeTareas li.completada {
+  background-color: #c4e7c2;
+  
+  
+}
 
-    #menu {
-        height: 40px;
-        width: 40px;
-        position: absolute;
-        margin-left: 1300px;
-        font-size: 40px;
-        background-color: transparent;
-        border: none;
-        color: #98a6ce;
-        
-        transition: transform 0.4s ease-in-out;
-        cursor: pointer;
-        display: flex;
-    }
-    
-    .label {
-        display: none;
-        
-        animation: animacion 0.2s ease-in-out;
-        opacity: 0;
-    }
-    
-   
-    #menu:hover + .label {
-        display: flex;
-        opacity: 1;
-        position: absolute;
-        margin-left: 250px;
-        
-        
-    }
-    @keyframes animacion {
-        0% {
-            opacity: 0;
-            transform: translateX(10px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-    #im {
-        position: absolute;
-        margin-top: 0px;
-        margin-left: 1300px;
-        font-size: 40px;
-        color: #98a6ce;
-        transition: color 0.3s ease-in-out;
-        
-    }
-    
-    #menu:hover #im {
-        color: #ff6b6b; 
-    }
-    
-   
+#filtroPrioridad {
+  margin: 0px;
+  position: relative;
+  left: -10px;
+  bottom: 45px;
+  height: 48px;
+}
 
-    #calcular{
-        border: 2px solid #45a3fa;
-        width: 8em;
-        height: 3.5em;
-        margin: 1em;
-        padding-left: 0.9em;
-        outline: none;
-        overflow: hidden;
-        padding: 0.5em;
-       
-        background-color: #e7e7e7;
-        border-radius: 10px;
-        transition: all 0.5s;
-        
-    }
+#buscador{
+  position: relative;
+  right: 280px;
+  top: 5px;
+  margin: 2px;
+}
 
-    #calcular:hover{
-        border: 2px solid #98a6ce;
-        background-color: rgb(255, 255, 255);
-    }
+/* Calendario */
+.calendar-button-container {
+  display: flex;
+  position: relative;
+  bottom: 659px;
+  left: 200px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+}
 
-    
+.calendar-container {
+  flex: 1;
+  max-width: 500px;
+ 
+}
 
-    .container {
-        width: 30em; 
-        max-height: auto; 
-        margin-top: 20px;
-        background-color: #7a7979;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        border-radius: 10px;
-        padding: 2px;
-        margin-bottom: 20px;
-        border: 2px solid #98a6ce;
-        position: absolute;
-        margin-left: 710px;
-        margin-top: 615px;
-    }
-    
-    .calendar {
-        width: 110%;
-        max-height: 400px; 
-        padding: 20px 15px; 
-        background: #fff;
-        border-radius: 20px;
-        position: absolute;
-        margin-top: -10px;
-        border: 2px solid #98a6ce;
-    }
+.calendar {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+ 
+}
 
-    .calendar:hover,
-    .calendar:focus {
-    border: 2px solid #4A9DEC;
-    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
-    background-color: white;}
-    
-    
 .calendar .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #ccc;
-  background-color: #ffffffef;
- 
 }
 
+.calendar .month {
+  font-size: 1.5em;
+}
 
+.weekdays {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
 
-
-.calendar .header .month {
-  display: flex;
-  align-items: center;
-  font-size: 25px;
-  font-weight: 600;
-  
-}
-.calendar .header .btns {
-  display: flex;
-  gap: 10px;
-}
-.calendar .header .btns .btn {
-  width: 50px;
-  height: 40px;
-  background: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.calendar .header .btns .btn:hover {
-  background: #45a2fa75;
-  color: #ffffff;
-  transform: scale(1.05);
-}
-.calendar .weekdays {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.calendar .weekdays .day {
-  width: calc(100% / 7 - 10px);
+.weekdays .day {
+  flex: 1;
   text-align: center;
-  font-size: 16px;
-  font-weight: 600;
 }
-.calendar .days {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
 }
-.calendar .days .day {
-  width: calc(100% / 7 - 10px);
+
+.notificacionAlta,
+.notificacionMedia,
+.notificacionBaja {
+  color: white;
   height: 50px;
-  background: #fff;
+  width: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 400;
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
+  border-radius: 50%;
+  position: fixed;
+  top: 20px;
+  
+  transition: transform 0.3s ease;
+}
+
+/* Prioridad alta (rojo) más cercana al borde derecho */
+.notificacionAlta {
+  background-color: #ff4d4d; /* Rojo más suave */
+  right: 20px; /* Posición más cercana al borde derecho */
+}
+
+/* Prioridad media (naranja) en el medio */
+.notificacionMedia {
+  background-color: #ffcc00; /* Naranja más suave */
+  right: 80px; /* Separación intermedia */
+}
+
+/* Prioridad baja (verde) más a la izquierda */
+.notificacionBaja {
+  background-color: #4caf50; /* Verde más suave */
+  right: 140px; /* Posición más lejana al borde derecho */
+}
+
+/* Efecto hover para las tres burbujas */
+.notificacionAlta:hover,
+.notificacionMedia:hover,
+.notificacionBaja:hover {
+  transform: scale(1.1); /* Animación al pasar el ratón */
+}
+
+
+/* Estilo base del select */
+select {
+  background-color: #c7dafc;
   color: #333;
-  transition: all 0.3s;
-  user-select: none;
-}
-.calendar .days .day:not(.next):not(.prev):hover {
-  color: #fff;
-  background: #45a3fa;
-  transform: scale(1.05);
-}
-.calendar .days .day.next,
-.calendar .days .day.prev {
-  color: #ccc;
-}
-.calendar .days .day.today {
-  color: #fff;
-  background: #98a6ce;
+  border: 2px solid #3B5998;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-h3 {
-   
-    font-size: small;
-}
-.feriado {
-  color: #fff;  
-  position: absolute;
-  margin-top: 10px; 
-  margin-left:900px; 
-  background-color: #4a90e2; 
-  border-radius: 10px;  
-  padding: 15px;  
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-  font-size: 16px;  
-  font-family: 'Arial', sans-serif; 
-   
-  transition: background-color 0.3s ease;
+/* Cambiar el color cuando el select está en hover */
+select:hover {
+  background-color: #b3d1ff;
+  color: #111;
 }
 
-
-.feriado:hover {
-  background-color: #356ab2;  
-  cursor: pointer;  
+/* Cambiar el color cuando el select está enfocado */
+select:focus {
+  background-color: #a3c7ff;
+  color: #000;
+  box-shadow: 0px 0px 5px rgba(59, 89, 152, 0.5);
 }
 
+/* Estilizar y "separar" cada opción */
+select option {
+  background-color: white;     
+                
+  padding: 10px;              
+  border-bottom: 1px solid #ddd; 
+}
+
+#listaDeTareas li .salto {
+  content: "\A";
+      white-space: pre;
+      display: block;
+}
+
+.swal2-input {
+  margin: 10px 0;
+}

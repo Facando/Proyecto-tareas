@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <title>Calendario de Tareas</title>
+    <link rel="stylesheet" href="/styles/calendario.css">
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="sidebar">
+        <h2>Menú</h2>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-list"></i> Lista de Tareas</a></li>
+            
+        </ul>
+    </div>
+
+    <div class = feriado><p id="textoFeriado"></p></div>
+
+    <div class="main-content">
+        <h1>Calendario de Tareas</h1>
+        
+        <!-- Contenedor del calendario centrado -->
+        <div class="container">
+            <div class="calendar" id="calendar">
+                <div class="header">
+                    <div class="month"></div>
+                    <div class="btns">
+                        <div class="btn prev"><i class="fas fa-chevron-left"></i></div>
+                        <div class="btn today"><i class="fas fa-calendar-day"></i></div>
+                        <div class="btn next"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="weekdays">
+                    <div class="day">Dom</div>
+                    <div class="day">Lun</div>
+                    <div class="day">Mar</div>
+                    <div class="day">Mie</div>
+                    <div class="day">Jue</div>
+                    <div class="day">Vie</div>
+                    <div class="day">Sab</div>
+                </div>
+                <div class="days"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/Calendario.js"></script>
+    
+    <script src="/js/main.js"></script>
+</body>
+</html>

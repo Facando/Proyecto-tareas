@@ -1,4 +1,6 @@
 const contenedorDias = document.querySelector(".days");
+
+
 const botonSiguiente = document.querySelector(".next");
 const botonAnterior = document.querySelector(".prev");
 const botonHoy = document.querySelector(".today");
@@ -105,82 +107,78 @@ contenedorDias.addEventListener("click", (e) => {
       const dia = e.target.innerText;
       const fechaSeleccionada = new Date(añoActual, mesActual, dia);
 
+      // Mostrar SweetAlert para ingresar título, descripción y prioridad
       Swal.fire({
-        title: `Ingrese un evento para el ${fechaSeleccionada.toLocaleDateString()}`,
-        input: 'text',
-        inputPlaceholder: 'Escriba su tarea aquí',
+        title: `Agregar tarea para el ${fechaSeleccionada.toLocaleDateString()}`,
+        html: `
+          <input id="tituloTarea" class="swal2-input" placeholder="Título de la tarea">
+          <input id="descripcionTarea" class="swal2-input" placeholder="Descripción de la tarea">
+          <select id="prioridadTarea" class="swal2-input">
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        `,
         showCancelButton: true,
         confirmButtonText: 'Agregar',
         cancelButtonText: 'Cancelar',
-        inputValidator: (value) => {
-          if (!value) {
-            return 'Debe ingresar una tarea válida.';
+        preConfirm: () => {
+          const titulo = Swal.getPopup().querySelector('#tituloTarea').value;
+          const descripcion = Swal.getPopup().querySelector('#descripcionTarea').value;
+          const prioridad = Swal.getPopup().querySelector('#prioridadTarea').value;
+          if (!titulo || !descripcion) {
+            Swal.showValidationMessage('Por favor, ingresa todos los campos');
           }
+          return { titulo, descripcion, prioridad };
         }
       }).then((result) => {
         if (result.isConfirmed) {
-          const textoTarea = result.value;
-
           const nuevaTarea = {
-            texto: textoTarea,
-            completado: false,
+            titulo: result.value.titulo,
+            descripcion: result.value.descripcion,
+            prioridad: result.value.prioridad,
             fecha: fechaSeleccionada.toISOString()
           };
+         
 
-          let diaTarea = nuevaTarea.fecha.slice(8, 10);
-          let mesTarea = nuevaTarea.fecha.slice(5, 7);
+          // Guardar la tarea en localStorage
+          let tareasGuardadas = JSON.parse(localStorage.getItem("tareas")) || [];
+          tareasGuardadas.push(nuevaTarea);
+          localStorage.setItem("tareas", JSON.stringify(tareasGuardadas));
 
-          guardartareas.push(nuevaTarea.texto + ` - ${diaTarea}/${mesTarea}`);
-          localStorage.setItem("tareas", JSON.stringify(guardartareas));
-
-          let li = document.createElement("li");
-          let div = document.createElement("div");
-          div.classList.add("div_li");
-
-          li.innerHTML = `<p>${nuevaTarea.texto} - ${diaTarea}/${mesTarea}</p>`;
-
-          let botonBorrarIndividual = document.createElement("button");
-          botonBorrarIndividual.classList.add("botonBorrarIndividual");
+          // Mostrar tarea en la lista
           
-          botonBorrarIndividual.addEventListener("click", () => {
-            li.remove();
-            eliminarTareaDeLocalStorage(nuevaTarea);
-            Toastify({
-              text: "Completado",
-              position: "left",
-              duration: 3000
-            }).showToast();
-          });
+          
 
-          let iconoBorrar = document.createElement("i");
-          iconoBorrar.classList.add("fas", "fa-check");
-          botonBorrarIndividual.appendChild(iconoBorrar);
-
-          li.appendChild(botonBorrarIndividual);
-          div.appendChild(li);
-          listaDeTareas.appendChild(div);
-
-          if (parseInt(diaTarea) === new Date().getDate() && parseInt(mesTarea) === new Date().getMonth() + 1) {
-            Toastify({
-              text: "Es para hoy",
-              position: "left",
-              duration: 3000
-            }).showToast();
-          }
+          
         }
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        
+        Toast.fire({
+          icon: "success",
+          title: ' Tarea agregada correctamente\n click para ver la Lista de Tareas.<a href="index.html" style="color: white;"> la Lista de Tareas.</a>'
+        });
+        
       });
   }
 });
 
-let texto = document.getElementById("fecha");
-
 function convertirFecha(fechaString) {
-  let partes = fechaString.split('/');
-  let dia = partes[0];
-  let mes = partes[1];
-  let año = partes[2];
-
-  return new Date(`${año}-${mes}-${dia}`);
+  let partes = fechaString.split('-');
+  let año = partes[0];
+  let mes = partes[1] - 1;  // Los meses en JavaScript son de 0 a 11
+  let dia = partes[2];
+  return new Date(año, mes, dia);
 }
 
 function calcularDiferenciaEnDias(fecha1, fecha2) {
@@ -189,36 +187,41 @@ function calcularDiferenciaEnDias(fecha1, fecha2) {
 }
 
 function consultarFeriados() {
-    fetch("https://api.argentinadatos.com/v1/feriados/2024")
-      .then(response => response.json())
-      .then(data => {
-        let fechaActual = new Date();
+  const texto = document.getElementById('textoFeriado');
 
-        let feriadoMasCercano = data
-          .map(feriado => {
-            return {
-              ...feriado,
-              fechaObj: convertirFecha(feriado.fecha)
-            };
-          })
-          .filter(feriado => feriado.fechaObj >= fechaActual)
-          .sort((a, b) => a.fechaObj - b.fechaObj)[0];
+  fetch("https://api.argentinadatos.com/v1/feriados/2024")
+    .then(response => response.json())
+    .then(data => {
+      let fechaActual = new Date();
 
-        if (feriadoMasCercano) {
-          let dia = feriadoMasCercano.fechaObj.getDate();
-          let mes = feriadoMasCercano.fechaObj.getMonth() + 1;
+      let feriadoMasCercano = data
+        .map(feriado => {
+          return {
+            ...feriado,
+            fechaObj: convertirFecha(feriado.fecha)
+          };
+        })
+        .filter(feriado => feriado.fechaObj >= fechaActual)  // Feriados futuros
+        .sort((a, b) => a.fechaObj - b.fechaObj)[0];  // Ordenar y obtener el más cercano
 
-          let diasFaltantes = calcularDiferenciaEnDias(fechaActual, feriadoMasCercano.fechaObj );
+      if (feriadoMasCercano) {
+        let dia = feriadoMasCercano.fechaObj.getDate();
+        let mes = feriadoMasCercano.fechaObj.getMonth() + 1;
 
-          texto.innerHTML = `${dia}/${mes} ${feriadoMasCercano.nombre} , faltan ${diasFaltantes +1} días.`;
-        } else {
-          texto.innerHTML = 'No hay feriados futuros en este año';
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        texto.innerHTML = 'Error al cargar los feriados';
-      });
+        let diasFaltantes = calcularDiferenciaEnDias(fechaActual, feriadoMasCercano.fechaObj);
+
+        texto.innerHTML = `${dia}/${mes} - ${feriadoMasCercano.nombre}. Faltan ${diasFaltantes + 1} días.`;
+      } else {
+        texto.innerHTML = 'No hay feriados futuros en este año';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      texto.innerHTML = 'Error al cargar los feriados';
+    });
 }
 
-consultarFeriados();
+document.addEventListener("DOMContentLoaded", () => {
+  consultarFeriados();  // Llamada a la función al cargar la página
+});
+
