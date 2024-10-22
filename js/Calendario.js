@@ -166,7 +166,7 @@ contenedorDias.addEventListener("click", (e) => {
         
         Toast.fire({
           icon: "success",
-          title: ' Tarea agregada correctamente\n click para ver la Lista de Tareas.<a href="index.html" style="color: white;"> la Lista de Tareas.</a>'
+          title: ' Tarea agregada correctamente\n click para ver la Lista de Tareas.<a href="../index.html" style="color: white;"> la Lista de Tareas.</a>'
         });
         
       });
