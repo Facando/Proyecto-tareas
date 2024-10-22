@@ -55,24 +55,23 @@ const mostrarTareasGuardadas = () => {
         }
 
         let botonCompletar = document.createElement("button");
-    botonCompletar.innerHTML = tarea.completado ? "Deshacer" : "Completar";
-    botonCompletar.classList.add("botonCompletar");
-
-    botonCompletar.addEventListener("click", () => {
-    tarea.completado = !tarea.completado;  // Alterna entre completado y no completado
-
-    if (tarea.completado) {
-        li.classList.add("completada");  // Agrega la clase para mostrarla como completada
-        botonCompletar.innerHTML = "Deshacer";  // Cambia el texto del botón
-    } else {
-        li.classList.remove("completada");  // Quita la clase de completada
-        botonCompletar.innerHTML = "Completar";  // Cambia el texto del botón
-    }
-
-    actualizarLocalStorage();  // Actualiza el localStorage con el nuevo estado de la tarea
-    actualizarNotificaciones();  // Actualiza las notificaciones
-});
-
+        botonCompletar.innerHTML = tarea.completado ? "Deshacer" : "Completar";
+        botonCompletar.classList.add("botonCompletar");
+    
+        botonCompletar.addEventListener("click", () => {
+            tarea.completado = !tarea.completado;  // Alterna entre completado y no completado
+    
+            if (tarea.completado) {
+                li.classList.add("completada");  // Agrega la clase para mostrarla como completada
+                botonCompletar.innerHTML = "Deshacer";  // Cambia el texto del botón
+            } else {
+                li.classList.remove("completada");  // Quita la clase de completada
+                botonCompletar.innerHTML = "Completar";  // Cambia el texto del botón
+            }
+    
+            actualizarLocalStorage();  // Actualiza el localStorage con el nuevo estado de la tarea
+            actualizarNotificaciones();  // Actualiza las notificaciones
+        });
 
         let botonEditar = document.createElement("button");
         botonEditar.innerHTML = "Editar";
@@ -197,7 +196,20 @@ const deshacerBorrado = () => {
         let tareaRestaurada = tareasEliminadas.pop();  // Recuperar la última tarea eliminada
         guardartareas.push(tareaRestaurada);
         actualizarLocalStorage();
+        
+        // Mostrar las tareas actualizadas
         mostrarTareasGuardadas();
+
+        // Buscar el elemento de la tarea restaurada en la lista y agregar la clase
+        const tareasLi = listaDeTareas.querySelectorAll('li');
+        tareasLi.forEach(li => {
+            // Compara el título de la tarea restaurada con el título en la lista
+            if (li.innerHTML.includes(tareaRestaurada.titulo)) {
+                
+                // Restablecer el color después de un tiempo (opcional)
+                
+            }
+        });
 
         Toastify({
             text: "Tarea restaurada",
@@ -216,6 +228,8 @@ const deshacerBorrado = () => {
         }).showToast();
     }
 };
+
+
 
 // Event listeners
 boton.addEventListener("click", agregarTarea);
