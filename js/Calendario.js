@@ -179,49 +179,144 @@ function convertirFecha(fechaString) {
   let mes = partes[1] - 1;  // Los meses en JavaScript son de 0 a 11
   let dia = partes[2];
   return new Date(año, mes, dia);
+
 }
 
+function consultarFeriados() {
+  const contenedorFeriados = document.getElementById('textoFeriado'); // Contenedor donde se mostrarán los feriados
+
+  fetch("https://api.argentinadatos.com/v1/feriados/2025")
+    .then(response => response.json())
+    .then(data => {
+      const fechaActual = new Date();
+
+      // Obtener feriados futuros
+      const feriadosFuturos = data
+        .map(feriado => ({
+          ...feriado,
+          fechaObj: convertirFecha(feriado.fecha)
+        }))
+        .filter(feriado => feriado.fechaObj >= fechaActual) // Filtrar futuros
+        .sort((a, b) => a.fechaObj - b.fechaObj); // Ordenar por fecha
+
+      if (feriadosFuturos.length === 0) {
+        contenedorFeriados.innerHTML = `<p>3/3</p>`;
+        return;
+      }
+
+      // Mostrar los tres feriados más cercanos
+      const proximosFeriados = feriadosFuturos.slice(0, 3); // Obtener hasta tres feriados
+
+      // Crear elementos <p> para cada feriado
+      contenedorFeriados.innerHTML = proximosFeriados
+        .map(feriado => {
+          const dia = feriado.fechaObj.getDate();
+          const mes = feriado.fechaObj.getMonth() + 1;
+          const diasFaltantes = calcularDiferenciaEnDias(fechaActual, feriado.fechaObj);
+
+          return `<p>${dia}/${mes} - ${feriado.nombre}. Faltan ${diasFaltantes } días.</p>`;
+        })
+        .join(''); // Unir todos los párrafos
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      contenedorFeriados.innerHTML = '<p>Error al cargar los feriados</p>';
+    });
+}
+
+// Función auxiliar para convertir la fecha
+function convertirFecha(fechaString) {
+  const partes = fechaString.split('-');
+  const año = parseInt(partes[0]);
+  const mes = parseInt(partes[1]) - 1; // Meses empiezan en 0
+  const dia = parseInt(partes[2]);
+  return new Date(año, mes, dia);
+}
+
+// Función auxiliar para calcular días restantes
 function calcularDiferenciaEnDias(fecha1, fecha2) {
   const diferenciaMs = fecha2 - fecha1;
   return Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
 }
 
-function consultarFeriados() {
-  const texto = document.getElementById('textoFeriado');
+// Llamar a la función al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+  consultarFeriados();
+});
+
+
+
+//New slide Holiday
+let indiceFeriadoActual = 0; // Índice para rastrear el feriado actualmente mostrado
+
+function nuevoconsultarFeriados() {
+  const contenedorFeriados = document.getElementById('textHoliday'); // Contenedor donde se mostrarán los feriados
 
   fetch("https://api.argentinadatos.com/v1/feriados/2024")
     .then(response => response.json())
     .then(data => {
-      let fechaActual = new Date();
+      const fechaActual = new Date();
 
-      let feriadoMasCercano = data
-        .map(feriado => {
-          return {
-            ...feriado,
-            fechaObj: convertirFecha(feriado.fecha)
-          };
-        })
-        .filter(feriado => feriado.fechaObj >= fechaActual)  // Feriados futuros
-        .sort((a, b) => a.fechaObj - b.fechaObj)[0];  // Ordenar y obtener el más cercano
+      // Obtener feriados futuros
+      const feriadosFuturos = data
+        .map(feriado => ({
+          ...feriado,
+          fechaObj: convertirFecha(feriado.fecha)
+        }))
+        .filter(feriado => feriado.fechaObj >= fechaActual) // Filtrar futuros
+        .sort((a, b) => a.fechaObj - b.fechaObj); // Ordenar por fecha
 
-      if (feriadoMasCercano) {
-        let dia = feriadoMasCercano.fechaObj.getDate();
-        let mes = feriadoMasCercano.fechaObj.getMonth() + 1;
-
-        let diasFaltantes = calcularDiferenciaEnDias(fechaActual, feriadoMasCercano.fechaObj);
-
-        texto.innerHTML = `${dia}/${mes} - ${feriadoMasCercano.nombre}. Faltan ${diasFaltantes + 1} días.`;
-      } else {
-        texto.innerHTML = 'No hay feriados futuros en este año';
+      if (feriadosFuturos.length === 0) {
+        contenedorFeriados.innerHTML = `<p class=SgtFeriado>Siguiente Feriado</p>`;
+        return;
       }
+
+      mostrarFeriado(feriadosFuturos);
+
+      // Configurar el evento para mostrar el siguiente feriado
+      document.getElementById('botonSiguiente').addEventListener('click', () => {
+        if (indiceFeriadoActual < feriadosFuturos.length - 1) {
+          indiceFeriadoActual++;
+          mostrarFeriado(feriadosFuturos);
+        } else {
+          contenedorFeriados.innerHTML = '<p>No hay feriados futuros</p>';
+        }
+      });
     })
     .catch(error => {
       console.error('Error:', error);
-      texto.innerHTML = 'Error al cargar los feriados';
+      contenedorFeriados.innerHTML = '<p>Error al cargar los feriados</p>';
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  consultarFeriados();  // Llamada a la función al cargar la página
-});
+// Función para mostrar un feriado específico
+function mostrarFeriado(feriadosFuturos) {
+  const contenedorFeriados = document.getElementById('textHoliday');
+  const feriado = feriadosFuturos[indiceFeriadoActual];
+  const fechaActual = new Date();
+  const dia = feriado.fechaObj.getDate();
+  const mes = feriado.fechaObj.getMonth() + 1;
+  const diasFaltantes = calcularDiferenciaEnDias(fechaActual, feriado.fechaObj);
 
+  contenedorFeriados.innerHTML = `<p>${dia}/${mes} - ${feriado.nombre}. Faltan  ${diasFaltantes } días.</p>`;
+}
+
+// Función auxiliar para convertir la fecha
+function convertirFecha(fechaString) {
+  const partes = fechaString.split('-');
+  const año = parseInt(partes[0]);
+  const mes = parseInt(partes[1]) - 1; // Meses empiezan en 0
+  const dia = parseInt(partes[2]);
+  return new Date(año, mes, dia);
+}
+
+// Función auxiliar para calcular días restantes
+function calcularDiferenciaEnDias(fecha1, fecha2) {
+  const diferenciaMs = fecha2 - fecha1;
+  return Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+}
+
+// Llamar a la función al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+  nuevoconsultarFeriados();
+});

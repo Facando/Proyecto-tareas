@@ -8,8 +8,15 @@ let prioridad = document.getElementById("prioridad");
 let buscador = document.getElementById("buscador");
 let botonDeshacer = document.getElementById("deshacer");
 
-let guardartareas = JSON.parse(localStorage.getItem("tareas")) || [];
-let tareasEliminadas = []; // Array para almacenar las últimas tareas eliminadas
+// Manejo de errores al cargar las tareas
+let guardartareas = [];
+try {
+    guardartareas = JSON.parse(localStorage.getItem("tareas")) || [];
+} catch (error) {
+    console.error("Error al cargar las tareas:", error);
+}
+
+let tareasEliminadas = [];
 
 // Contenedor para notificaciones de tareas pendientes
 let contenedorNotificaciones = document.createElement("div");
@@ -23,7 +30,6 @@ const actualizarNotificaciones = () => {
     let tareasBajas = guardartareas.filter(tarea => tarea.prioridad === "baja" && !tarea.completado).length;
 
     contenedorNotificaciones.innerHTML = `
-
         <p class="notificacionAlta">${tareasAltas}</p>
         <p class="notificacionMedia"> ${tareasMedias}</p>
         <p class="notificacionBaja"> ${tareasBajas}</p>
@@ -32,11 +38,11 @@ const actualizarNotificaciones = () => {
 
 // Mostrar tareas al cargar la página
 const mostrarTareasGuardadas = () => {
-    listaDeTareas.innerHTML = '';  // Limpiar lista
+    listaDeTareas.innerHTML = ''; // Limpiar lista
     let filtro = filtroPrioridad.value;
     let busqueda = buscador.value.toLowerCase();
 
-    guardartareas.filter(tarea => 
+    guardartareas.filter(tarea =>
         (filtro === "todas" || tarea.prioridad === filtro) &&
         tarea.titulo.toLowerCase().includes(busqueda)
     ).forEach(tarea => {
@@ -57,10 +63,10 @@ const mostrarTareasGuardadas = () => {
         let botonCompletar = document.createElement("button");
         botonCompletar.innerHTML = tarea.completado ? "Deshacer" : "Completar";
         botonCompletar.classList.add("botonCompletar");
-    
+
         botonCompletar.addEventListener("click", () => {
             tarea.completado = !tarea.completado;  // Alterna entre completado y no completado
-    
+
             if (tarea.completado) {
                 li.classList.add("completada");  // Agrega la clase para mostrarla como completada
                 botonCompletar.innerHTML = "Deshacer";  // Cambia el texto del botón
@@ -68,7 +74,7 @@ const mostrarTareasGuardadas = () => {
                 li.classList.remove("completada");  // Quita la clase de completada
                 botonCompletar.innerHTML = "Completar";  // Cambia el texto del botón
             }
-    
+
             actualizarLocalStorage();  // Actualiza el localStorage con el nuevo estado de la tarea
             actualizarNotificaciones();  // Actualiza las notificaciones
         });
@@ -76,6 +82,7 @@ const mostrarTareasGuardadas = () => {
         let botonEditar = document.createElement("button");
         botonEditar.innerHTML = "Editar";
         botonEditar.classList.add("botonEditar");
+
         botonEditar.addEventListener("click", () => {
             Swal.fire({
                 title: 'Editar tarea',
@@ -92,27 +99,33 @@ const mostrarTareasGuardadas = () => {
                 confirmButtonText: 'Guardar',
                 cancelButtonText: 'Cancelar',
                 preConfirm: () => {
-                  const nuevoTitulo = Swal.getPopup().querySelector('#nuevoTitulo').value;
-                  const nuevaDescripcion = Swal.getPopup().querySelector('#nuevaDescripcion').value;
-                  const nuevaPrioridad = Swal.getPopup().querySelector('#nuevaPrioridad').value;
-                  if (!nuevoTitulo || !nuevaDescripcion) {
-                    Swal.showValidationMessage('Ambos campos son requeridos');
-                  }
-                  return { nuevoTitulo, nuevaDescripcion, nuevaPrioridad };
+                    const nuevoTitulo = Swal.getPopup().querySelector('#nuevoTitulo').value;
+                    const nuevaDescripcion = Swal.getPopup().querySelector('#nuevaDescripcion').value;
+                    const nuevaPrioridad = Swal.getPopup().querySelector('#nuevaPrioridad').value;
+                    if (!nuevoTitulo || !nuevaDescripcion) {
+                        Swal.showValidationMessage('Ambos campos son requeridos');
+                    }
+                    return {nuevoTitulo, nuevaDescripcion, nuevaPrioridad};
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
                     tarea.titulo = result.value.nuevoTitulo;
                     tarea.descripcion = result.value.nuevaDescripcion;
                     tarea.prioridad = result.value.nuevaPrioridad;
+
                     actualizarLocalStorage();
                     mostrarTareasGuardadas();
-                    Swal.fire({
-                        title: 'Actualizado',
-                        text: 'La tarea ha sido actualizada',
-                        icon: 'success',
-                        timer: 1500
-                    });
+
+                    Toastify({
+                        text: "Tarea actualizada",
+                        position: "right",
+                        duration: 3000,
+                        style: {
+                            background: "#4CAF50" // Verde para éxito
+                        }
+                    }).showToast();
+
+                    actualizarNotificaciones();
                 }
             });
         });
@@ -120,6 +133,7 @@ const mostrarTareasGuardadas = () => {
         let botonBorrarIndividual = document.createElement("button");
         botonBorrarIndividual.innerHTML = "Borrar";
         botonBorrarIndividual.classList.add("botonBorrarIndividual");
+
         botonBorrarIndividual.addEventListener("click", () => {
             tareasEliminadas.push(tarea);  // Agregar la tarea al array de eliminadas
             li.remove();  // Remover la tarea de la lista
@@ -130,6 +144,7 @@ const mostrarTareasGuardadas = () => {
                 position: "right",
                 duration: 3000
             }).showToast();
+
             actualizarNotificaciones();
         });
 
@@ -139,6 +154,7 @@ const mostrarTareasGuardadas = () => {
         div.appendChild(li);
         listaDeTareas.appendChild(div);
     });
+
     actualizarNotificaciones();
 };
 
@@ -152,12 +168,25 @@ const agregarTarea = () => {
             completado: false,
             fecha: null  // No se asigna fecha si no se agrega desde el calendario
         };
-        
+
         guardartareas.push(tarea);
         localStorage.setItem("tareas", JSON.stringify(guardartareas));
         mostrarTareasGuardadas();
-        input.value = "";  // Limpiar input
-        descripcion.value = "";  // Limpiar descripción
+
+        // Limpiar inputs después de agregar la tarea
+        input.value = "";
+        descripcion.value = "";
+
+        Toastify({
+            text: "Tarea agregada",
+            position: "right",
+            duration: 3000,
+            style: {
+                background: "#4CAF50" // Verde para éxito
+            }
+        }).showToast();
+
+        actualizarNotificaciones();
     } else {
         Toastify({
             text: "Por favor, completa todos los campos.",
@@ -176,7 +205,17 @@ const borrarTareas = () => {
     listaDeTareas.innerHTML = "";
     localStorage.removeItem("tareas");
     guardartareas = [];
+    tareasEliminadas = []; // Limpiar la lista de tareas eliminadas
     actualizarNotificaciones();
+
+    Toastify({
+        text: "Todas las tareas fueron eliminadas",
+        position: "right",
+        duration: 3000,
+        style: {
+            background: "#f44336" // Rojo para advertencia
+        }
+    }).showToast();
 };
 
 // Función para eliminar una tarea específica del localStorage
@@ -193,29 +232,19 @@ const actualizarLocalStorage = () => {
 // Función para deshacer el último borrado (restaurar la última tarea eliminada)
 const deshacerBorrado = () => {
     if (tareasEliminadas.length > 0) {
-        let tareaRestaurada = tareasEliminadas.pop();  // Recuperar la última tarea eliminada
+        let tareaRestaurada = tareasEliminadas.pop(); // Recuperar la última tarea eliminada
         guardartareas.push(tareaRestaurada);
         actualizarLocalStorage();
-        
+
         // Mostrar las tareas actualizadas
         mostrarTareasGuardadas();
-
-        // Buscar el elemento de la tarea restaurada en la lista y agregar la clase
-        const tareasLi = listaDeTareas.querySelectorAll('li');
-        tareasLi.forEach(li => {
-            // Compara el título de la tarea restaurada con el título en la lista
-            if (li.innerHTML.includes(tareaRestaurada.titulo)) {
-                
-                // Restablecer el color después de un tiempo (opcional)
-                
-            }
-        });
 
         Toastify({
             text: "Tarea restaurada",
             position: "right",
             duration: 3000
         }).showToast();
+
         actualizarNotificaciones();
     } else {
         Toastify({
@@ -228,8 +257,6 @@ const deshacerBorrado = () => {
         }).showToast();
     }
 };
-
-
 
 // Event listeners
 boton.addEventListener("click", agregarTarea);
@@ -244,20 +271,18 @@ mostrarTareasGuardadas();
 // Función para aplicar colores a las opciones según la prioridad
 function aplicarColoresPrioridad() {
     const select = document.getElementById("prioridad");
-    
     // Iterar sobre cada opción dentro del select
     for (let i = 0; i < select.options.length; i++) {
         let option = select.options[i];
-        
         // Cambiar el color según el valor de la opción
         if (option.value === "alta") {
-            option.style.backgroundColor = "#ff4d4d";  // Rojo para alta prioridad
+            option.style.backgroundColor = "#ff4d4d"; // Rojo para alta prioridad
             option.style.color = "white";
         } else if (option.value === "media") {
-            option.style.backgroundColor = "#ffcc00";  // Amarillo para media prioridad
+            option.style.backgroundColor = "#ffcc00"; // Amarillo para media prioridad
             option.style.color = "black";
         } else if (option.value === "baja") {
-            option.style.backgroundColor = "#4caf50";  // Verde para baja prioridad
+            option.style.backgroundColor = "#4caf50"; // Verde para baja prioridad
             option.style.color = "white";
         }
     }
@@ -266,14 +291,20 @@ function aplicarColoresPrioridad() {
 // Llamar a la función cuando la página esté cargada
 document.addEventListener("DOMContentLoaded", aplicarColoresPrioridad);
 
+function showTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
 
+    const timehour = `${hours} : ${minutes} `;
+    document.getElementById('horahoy').textContent = timehour;
+}
 
+// Actualizar el reloj cada segundo
+setInterval(showTime, 1000);
+// Mostrar la hora inmediatamente al cargar la página
+showTime();
 
 diahoy = new Date();
-document.getElementById("diahoy").innerHTML = diahoy.toLocaleDateString();
-
-
-
-
-
-
+const date = `${diahoy.getDate()}/${diahoy.getMonth() + 1}/${diahoy.getFullYear()}`
+document.getElementById("diahoy").innerHTML = date
